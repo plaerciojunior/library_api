@@ -1,9 +1,24 @@
-from flask import Flask
-from schema.bd import db, livro
+from flask import Flask, jsonify, request
+from pony.orm import db_session
+from schema.bd import db, Livro
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET'])
+#Rota para criação do livro
+@app.route('/', methods=['POST'])
 @db_session
 def get_all():
+    data = request.json
+    name = data['name']
+    author = data['author']
+
+    Livro(name=name, author=author)
+    return jsonify(
+        {"Status": "Created"})
+
+
+app.run(debug=True)
+
+
+
     
