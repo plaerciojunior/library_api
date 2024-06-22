@@ -16,6 +16,8 @@ def get_all():
     return jsonify(
         {"Status": "Created"})
 
+#Rota para Ler um livro de acordo com seu id
+
 
 app.run(debug=True)
 
