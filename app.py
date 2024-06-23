@@ -14,13 +14,13 @@ def create_book():
 
     Livro(name=name, author=author)
     return jsonify(
-        {"Status": "Created"})
+        {"Status": "Book Created"})
 
 #Rota para Ler um livro de acordo com seu id
-@app.route('/<string:name2>', methods=['GET'])
+@app.route('/<string:id>', methods=['GET'])
 @db_session
-def get_byid(name2):
-    book = Livro.get(id=name2)
+def get_byid(id):
+    book = Livro.get(id=id)
     
     return jsonify(
         {"Status": "Response",
@@ -29,6 +29,24 @@ def get_byid(name2):
         "Author": book.author}
         )
     
+
+#Rota para atualizar um livro de acordo com seu id.
+
+@app.route('/<string:id>', methods=['PUT'])
+@db_session
+def update_byid(id):
+    data = request.json
+    name = data['name']
+    author = data['author']
+    book = Livro.get(id=id)
+    
+    book.name = name
+    book.author = author
+
+    return jsonify({
+        "Status": "Book Updated"
+    })
+
 
 
 
