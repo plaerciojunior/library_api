@@ -47,7 +47,17 @@ def update_byid(id):
         "Status": "Book Updated"
     })
 
-
+#Rota para deletar livro de acordo com seu id.
+@app.route('/<string:id>', methods=['DELETE'])
+@db_session
+def delete_byid(id):
+    
+    book = Livro.get(id=id)
+    book.delete()
+    return jsonify({
+        "Status": "Book Deleted"
+    })
+    
 
 
 
