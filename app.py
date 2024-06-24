@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from pony.orm import db_session
+from pony.orm import db_session, select
 from schema.bd import db, Livro
 
 app = Flask(__name__)
@@ -31,7 +31,6 @@ def get_byid(id):
     
 
 #Rota para atualizar um livro de acordo com seu id.
-
 @app.route('/<string:id>', methods=['PUT'])
 @db_session
 def update_byid(id):
@@ -51,12 +50,20 @@ def update_byid(id):
 @app.route('/<string:id>', methods=['DELETE'])
 @db_session
 def delete_byid(id):
-    
     book = Livro.get(id=id)
     book.delete()
     return jsonify({
         "Status": "Book Deleted"
     })
+
+
+#Rota para retornar todos os livros do banco de dados.
+@app.route('/', methods=['GET'])
+@db_session
+def get_allbooks():
+    all_books = Livro.select()[:]
+    livros_list = [{"id": str(livro.id), "name": livro.name, "author": livro.author} for livro in all_books]
+    return jsonify(livros_list)
     
 
 
